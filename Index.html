@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Valmont LASH | Tienda Oficial</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,400&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-color: #fcf8f8;
+      --card-bg: #ffffff;
+      --primary-pink: #f4dcd9;
+      --soft-rose: #e8b4b8;
+      --accent-gold: #d4af37;
+      --gold-hover: #b89628;
+      --text-dark: #332d2e;
+      --text-muted: #7e7375;
+      --border-color: #f0e2e2;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      --font-title: 'Playfair Display', serif;
+      --font-body: 'Montserrat', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-dark);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Navbar */
+    header {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0.8rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .brand-logo img {
+      height: 55px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .btn-admin {
+      display: none;
+      background: transparent;
+      border: 1px solid var(--soft-rose);
+      color: var(--text-dark);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-admin:hover {
+      background: var(--primary-pink);
+    }
+
+    body.is-admin .btn-admin {
+      display: inline-block;
+    }
+
+    body.is-admin .btn-delete-prod {
+      display: flex;
+    }
+
+    .cart-icon-btn {
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      position: relative;
+      padding: 5px;
+    }
+
+    .cart-badge {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background-color: var(--accent-gold);
+      color: white;
+      font-size: 0.7rem;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    /* Hero Banner */
+    .hero {
+      background: linear-gradient(135deg, #f7e6e5 0%, #ecd8df 100%);
+      text-align: center;
+      padding: 3.5rem 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .hero h1 {
+      font-family: var(--font-title);
+      font-size: 2.5rem;
+      font-weight: 500;
+      color: #4a3b40;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+
+    /* Main Container */
+    main {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+      flex: 1;
+      width: 100%;
+    }
+
+    /* Filter Buttons */
+    .filters {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+
+    .filter-btn {
+      background: white;
+      border: 1px solid var(--border-color);
+      padding: 0.6rem 1.4rem;
+      border-radius: 25px;
+      cursor: pointer;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      color: var(--text-dark);
+    }
+
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--soft-rose);
+      color: white;
+      border-color: var(--soft-rose);
+    }
+
+    /* Rejilla de Productos */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 2rem;
+    }
+
+    .product-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+    }
+
+    .product-img-wrap {
+      width: 100%;
+      height: 250px;
+      overflow: hidden;
+      background-color: #f9f9f9;
+      position: relative;
+    }
+
+    .product-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .product-card:hover .product-img-wrap img {
+      transform: scale(1.05);
+    }
+
+    .btn-delete-prod {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(255, 255, 255, 0.9);
+      border: none;
+      color: #d9534f;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      z-index: 2;
+    }
+
+    .product-info {
+      padding: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .product-category {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 0.3rem;
+    }
+
+    .product-title {
+      font-family: var(--font-title);
+      font-size: 1.15rem;
+      margin-bottom: 0.5rem;
+      color: var(--text-dark);
+    }
+
+    .product-price {
+      font-weight: 600;
+      color: var(--accent-gold);
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+
+    .btn-add-cart {
+      margin-top: auto;
+      background: var(--text-dark);
+      color: white;
+      border: none;
+      padding: 0.8rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      width: 100%;
+      transition: background 0.3s ease;
+    }
+
+    .btn-add-cart:hover {
+      background: var(--accent-gold);
+    }
+
+    /* Carrito Lateral */
+    .cart-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 200;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .cart-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .cart-sidebar {
+      position: fixed;
+      top: 0;
+      right: -420px;
+      width: 100%;
+      max-width: 400px;
+      height: 100%;
+      background: white;
+      z-index: 201;
+      box-shadow: -5px 0 25px rgba(0,0,0,0.1);
+      transition: right 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cart-overlay.active .cart-sidebar {
+      right: 0;
+    }
+
+    .cart-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cart-header h2 {
+      font-family: var(--font-title);
+      font-size: 1.4rem;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+
+    .cart-body {
+      padding: 1.5rem;
+      flex-grow: 1;
+      overflow-y: auto;
+    }
+
+    .cart-item {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+      padding-bottom: 1.2rem;
+      border-bottom: 1px solid #f5f5f5;
+      align-items: center;
+    }
+
+    .cart-item img {
+      width: 65px;
+      height: 65px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+
+    .cart-item-details {
+      flex-grow: 1;
+    }
+
+    .cart-item-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .cart-item-price {
+      font-size: 0.85rem;
+      color: var(--accent-gold);
+    }
+
+    .qty-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.4rem;
+    }
+
+    .qty-btn {
+      background: #f0f0f0;
+      border: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .remove-item-btn {
+      background: none;
+      border: none;
+      color: #999;
+      cursor: pointer;
+      font-size: 1.1rem;
+    }
+
+    .cart-footer {
+      padding: 1.5rem;
+      border-top: 1px solid var(--border-color);
+      background: #fafafa;
+    }
+
+    .cart-totals {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .checkout-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .checkout-form input, .checkout-form textarea {
+      width: 100%;
+      padding: 0.6rem 0.8rem;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+    }
+
+    .btn-whatsapp {
+      background: #25D366;
+      color: white;
+      border: none;
+      padding: 0.9rem;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+      margin-top: 0.5rem;
+      transition: background 0.3s ease;
+    }
+
+    .btn-whatsapp:hover {
+      background: #1eb857;
+    }
+
+    /* Modal Admin */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 300;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 480px;
+      box-shadow: var(--shadow);
+    }
+
+    .modal-content h3 {
+      font-family: var(--font-title);
+      margin-bottom: 1rem;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      margin-bottom: 0.3rem;
+      color: var(--text-muted);
+    }
+
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 0.7rem;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-family: var(--font-body);
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.8rem;
+      margin-top: 1.5rem;
+    }
+
+    .btn-secondary {
+      background: #eee;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--soft-rose);
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background: #f4efef;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-top: 3rem;
+      border-top: 1px solid var(--border-color);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="nav-container">
+      <a href="#" class="brand-logo">
+        <img id="main-logo" alt="Valmont LASH Logo">
+      </a>
+      <div class="nav-actions">
+        <button class="btn-admin" id="open-admin-btn">+ Agregar Producto</button>
+        <button class="cart-icon-btn" id="open-cart-btn" aria-label="Ver Carrito">
+          🛒
+          <span class="cart-badge" id="cart-count">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Banner -->
+  <section class="hero">
+    <h1>Elegancia y Resplandor</h1>
+    <p>Descubre nuestra colección exclusiva de cosméticos y realza tu belleza natural.</p>
+  </section>
+
+  <!-- Main -->
+  <main>
+    <div class="filters" id="categories-container">
+      <button class="filter-btn active" data-category="todos">Todos</button>
+      <button class="filter-btn" data-category="Cuidado Facial">Cuidado Facial</button>
+      <button class="filter-btn" data-category="Maquillaje">Maquillaje</button>
+      <button class="filter-btn" data-category="Pestañas y Cejas">Pestañas y Cejas</button>
+      <button class="filter-btn" data-category="Fragancias">Fragancias</button>
+    </div>
+
+    <div class="product-grid" id="product-grid">
+      <!-- Productos JS -->
+    </div>
+  </main>
+
+  <!-- Carrito -->
+  <div class="cart-overlay" id="cart-overlay">
+    <div class="cart-sidebar">
+      <div class="cart-header">
+        <h2>Tu Carrito</h2>
+        <button class="close-btn" id="close-cart-btn">&times;</button>
+      </div>
+      
+      <div class="cart-body" id="cart-items-container">
+        <!-- Ítems JS -->
+      </div>
+
+      <div class="cart-footer">
+        <div class="cart-totals">
+          <span>Total:</span>
+          <span id="cart-total-price">$ 0 COP</span>
+        </div>
+        
+        <form class="checkout-form" id="checkout-form">
+          <input type="text" id="client-name" placeholder="Tu Nombre Completo" required>
+          <input type="text" id="client-address" placeholder="Dirección de Envío" required>
+          <textarea id="client-notes" placeholder="Notas adicionales (opcional)" rows="2"></textarea>
+          <button type="submit" class="btn-whatsapp">
+            <span>Finalizar Pedido por WhatsApp</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Admin -->
+  <div class="modal" id="admin-modal">
+    <div class="modal-content">
+      <h3>Agregar Nuevo Producto</h3>
+      <form id="add-product-form">
+        <div class="form-group">
+          <label for="prod-name">Nombre del Producto</label>
+          <input type="text" id="prod-name" required placeholder="Ej. Sérum Facial Hidratante">
+        </div>
+        <div class="form-group">
+          <label for="prod-price">Precio en Pesos (COP)</label>
+          <input type="number" id="prod-price" required placeholder="Ej. 85000">
+        </div>
+        <div class="form-group">
+          <label for="prod-category">Categoría</label>
+          <select id="prod-category" required>
+            <option value="Cuidado Facial">Cuidado Facial</option>
+            <option value="Maquillaje">Maquillaje</option>
+            <option value="Pestañas y Cejas">Pestañas y Cejas</option>
+            <option value="Fragancias">Fragancias</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="prod-img">URL de la Foto del Producto</label>
+          <input type="url" id="prod-img" required placeholder="https://tusitio.com/foto-producto.jpg">
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" id="close-admin-btn">Cancelar</button>
+          <button type="submit" class="btn-primary">Guardar Producto</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 Valmont LASH. Todos los derechos reservados.</p>
+  </footer>
+
+  <script>
+    const PHONE_NUMBER = "573000000000"; // Tu número de WhatsApp con código de país 57
+    const ENCODED_KEY = "VmFsbW9udDIwMjYq"; // Contraseña: Valmont2026*
+    
+    let isAdminAuthenticated = false;
+    
+    // Función para formatear a Pesos Colombianos
+    function formatCOP(amount) {
+      return new Intl.NumberFormat('es-CO', {
+        style: 'currency',
+        currency: 'COP',
+        maximumFractionDigits: 0
+      }).format(amount);
+    }
+
+    const LOGO_DATA_URI = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 200"><defs><radialGradient id="bg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="%23edd2e0"/><stop offset="100%" stop-color="%23c2a3be"/></radialGradient><linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="%23ffffff"/><stop offset="50%" stop-color="%23f7e3af"/><stop offset="100%" stop-color="%23d4af37"/></linearGradient></defs><circle cx="250" cy="100" r="90" fill="url(%23bg)" stroke="%23ffffff" stroke-width="3"/><ellipse cx="250" cy="100" rx="120" ry="35" fill="none" stroke="url(%23gold)" stroke-width="5" transform="rotate(-15 250 100)"/><text x="250" y="115" font-family="Playfair Display, serif" font-size="42" font-weight="bold" fill="%234a3b40" text-anchor="middle">Valmont</text><text x="250" y="145" font-family="Montserrat, sans-serif" font-size="16" letter-spacing="6" fill="%23ffffff" text-anchor="middle">LASH</text></svg>`;
+
+    // Productos con Precios de Referencia en Pesos Colombianos
+    const defaultProductos = [
+      {
+        id: 1,
+        nombre: "Sérum Hidratante Glow",
+        categoria: "Cuidado Facial",
+        precio: 112000,
+        imagen: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        id: 2,
+        nombre: "Pestañas Magnéticas Lux",
+        categoria: "Pestañas y Cejas",
+        precio: 89000,
+        imagen: "https://images.unsplash.com/photo-1583001931096-959e9a1a6223?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        id: 3,
+        nombre: "Labial Velvet Rose",
+        categoria: "Maquillaje",
+        precio: 72000,
+        imagen: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=600&q=80"
+      },
+      {
+        id: 4,
+        nombre: "Perfume Bloom Essential",
+        categoria: "Fragancias",
+        precio: 180000,
+        imagen: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=600&q=80"
+      }
+    ];
+
+    let productos = JSON.parse(localStorage.getItem('vl_productos')) || defaultProductos;
+    let carrito = JSON.parse(localStorage.getItem('vl_carrito')) || [];
+    let currentCategory = 'todos';
+
+    const productGrid = document.getElementById('product-grid');
+    const categoriesContainer = document.getElementById('categories-container');
+    const cartOverlay = document.getElementById('cart-overlay');
+    const cartItemsContainer = document.getElementById('cart-items-container');
+    const cartTotalPrice = document.getElementById('cart-total-price');
+    const cartCount = document.getElementById('cart-count');
+    const openCartBtn = document.getElementById('open-cart-btn');
+    const closeCartBtn = document.getElementById('close-cart-btn');
+    const adminModal = document.getElementById('admin-modal');
+    const openAdminBtn = document.getElementById('open-admin-btn');
+    const closeAdminBtn = document.getElementById('close-admin-btn');
+    const addProductForm = document.getElementById('add-product-form');
+    const checkoutForm = document.getElementById('checkout-form');
+    const mainLogo = document.getElementById('main-logo');
+
+    document.addEventListener('DOMContentLoaded', () => {
+      mainLogo.src = LOGO_DATA_URI;
+      renderProducts();
+      updateCartUI();
+    });
+
+    function checkKey(inputPassword) {
+      if (!inputPassword) return false;
+      return btoa(inputPassword.trim()) === ENCODED_KEY;
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+        e.preventDefault();
+        promptAdminAccess();
+      }
+    });
+
+    function promptAdminAccess() {
+      const input = prompt("Acceso Administrador Secreto.\nIngresa la contraseña:");
+      if (checkKey(input)) {
+        isAdminAuthenticated = true;
+        document.body.classList.add('is-admin');
+        alert("¡Acceso Autorizado!");
+        adminModal.classList.add('active');
+        renderProducts();
+      } else if (input !== null) {
+        alert("Contraseña incorrecta.");
+      }
+    }
+
+    openAdminBtn.addEventListener('click', () => {
+      if (isAdminAuthenticated) adminModal.classList.add('active');
+    });
+
+    function saveState() {
+      localStorage.setItem('vl_productos', JSON.stringify(productos));
+      localStorage.setItem('vl_carrito', JSON.stringify(carrito));
+    }
+
+    function renderProducts() {
+      productGrid.innerHTML = '';
+      
+      const filtered = currentCategory === 'todos' 
+        ? productos 
+        : productos.filter(p => p.categoria === currentCategory);
+
+      if (filtered.length === 0) {
+        productGrid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted);">No hay productos en esta categoría.</p>`;
+        return;
+      }
+
+      filtered.forEach(product => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.innerHTML = `
+          <button class="btn-delete-prod" onclick="deleteProduct(${product.id})" title="Eliminar del catálogo">&times;</button>
+          <div class="product-img-wrap">
+            <img src="${product.imagen}" alt="${product.nombre}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80'">
+          </div>
+          <div class="product-info">
+            <span class="product-category">${product.categoria}</span>
+            <h3 class="product-title">${product.nombre}</h3>
+            <div class="product-price">${formatCOP(product.precio)}</div>
+            <button class="btn-add-cart" onclick="addToCart(${product.id})">Añadir al Carrito</button>
+          </div>
+        `;
+        productGrid.appendChild(card);
+      });
+    }
+
+    categoriesContainer.addEventListener('click', (e) => {
+      if (e.target.classList.contains('filter-btn')) {
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        e.target.classList.add('active');
+        currentCategory = e.target.dataset.category;
+        renderProducts();
+      }
+    });
+
+    addProductForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!isAdminAuthenticated) return;
+
+      const newProduct = {
+        id: Date.now(),
+        nombre: document.getElementById('prod-name').value,
+        precio: parseFloat(document.getElementById('prod-price').value),
+        categoria: document.getElementById('prod-category').value,
+        imagen: document.getElementById('prod-img').value
+      };
+
+      productos.push(newProduct);
+      saveState();
+      renderProducts();
+      addProductForm.reset();
+      adminModal.classList.remove('active');
+    });
+
+    window.deleteProduct = function(id) {
+      const authInput = prompt("Acción protegida.\nPor favor ingresa la contraseña de administrador para eliminar:");
+      
+      if (checkKey(authInput)) {
+        productos = productos.filter(p => p.id !== id);
+        carrito = carrito.filter(item => item.id !== id);
+        saveState();
+        renderProducts();
+        updateCartUI();
+        alert("Producto eliminado con éxito.");
+      } else if (authInput !== null) {
+        alert("Contraseña incorrecta. No tienes permiso para borrar productos.");
+      }
+    };
+
+    window.addToCart = function(id) {
+      const product = productos.find(p => p.id === id);
+      const existing = carrito.find(item => item.id === id);
+
+      if (existing) {
+        existing.cantidad += 1;
+      } else {
+        carrito.push({ ...product, cantidad: 1 });
+      }
+
+      saveState();
+      updateCartUI();
+      cartOverlay.classList.add('active');
+    };
+
+    function updateCartUI() {
+      cartItemsContainer.innerHTML = '';
+      let total = 0;
+      let count = 0;
+
+      if (carrito.length === 0) {
+        cartItemsContainer.innerHTML = `<p style="text-align: center; color: var(--text-muted); margin-top: 2rem;">Tu carrito está vacío.</p>`;
+      } else {
+        carrito.forEach(item => {
+          total += item.precio * item.cantidad;
+          count += item.cantidad;
+
+          const itemEl = document.createElement('div');
+          itemEl.className = 'cart-item';
+          itemEl.innerHTML = `
+            <img src="${item.imagen}" alt="${item.nombre}" onerror="this.src='https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80'">
+            <div class="cart-item-details">
+              <div class="cart-item-title">${item.nombre}</div>
+              <div class="cart-item-price">${formatCOP(item.precio)}</div>
+              <div class="qty-controls">
+                <button class="qty-btn" onclick="updateQty(${item.id}, -1)">-</button>
+                <span>${item.cantidad}</span>
+                <button class="qty-btn" onclick="updateQty(${item.id}, 1)">+</button>
+              </div>
+            </div>
+            <button class="remove-item-btn" onclick="removeFromCart(${item.id})">&times;</button>
+          `;
+          cartItemsContainer.appendChild(itemEl);
+        });
+      }
+
+      cartTotalPrice.textContent = formatCOP(total);
+      cartCount.textContent = count;
+    }
+
+    window.updateQty = function(id, delta) {
+      const item = carrito.find(i => i.id === id);
+      if (item) {
+        item.cantidad += delta;
+        if (item.cantidad <= 0) {
+          removeFromCart(id);
+        } else {
+          saveState();
+          updateCartUI();
+        }
+      }
+    };
+
+    window.removeFromCart = function(id) {
+      carrito = carrito.filter(item => item.id !== id);
+      saveState();
+      updateCartUI();
+    };
+
+    openCartBtn.addEventListener('click', () => cartOverlay.classList.add('active'));
+    closeCartBtn.addEventListener('click', () => cartOverlay.classList.remove('active'));
+    closeAdminBtn.addEventListener('click', () => adminModal.classList.remove('active'));
+
+    checkoutForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      if (carrito.length === 0) {
+        alert('Agrega productos al carrito antes de finalizar la compra.');
+        return;
+      }
+
+      const name = document.getElementById('client-name').value;
+      const address = document.getElementById('client-address').value;
+      const notes = document.getElementById('client-notes').value;
+
+      let message = `*¡Hola Valmont LASH! Quiero realizar un pedido.*\n\n`;
+      message += `*Cliente:* ${name}\n`;
+      message += `*Dirección:* ${address}\n`;
+      if (notes) message += `*Notas:* ${notes}\n`;
+      message += `\n*Detalle del Pedido:*\n`;
+
+      let total = 0;
+      carrito.forEach(item => {
+        const subtotal = item.precio * item.cantidad;
+        total += subtotal;
+        message += `• ${item.nombre} (x${item.cantidad}) - ${formatCOP(subtotal)}\n`;
+      });
+
+      message += `\n*Total a pagar: ${formatCOP(total)}*`;
+
+      const encodedMessage = encodeURIComponent(message);
+      const whatsappUrl = `https://wa.me/${PHONE_NUMBER}?text=${encodedMessage}`;
+
+      window.open(whatsappUrl, '_blank');
+    });
+  </script>
+</body>
+</html>
