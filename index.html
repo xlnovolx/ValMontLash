@@ -42,7 +42,7 @@
 
     /* Navbar */
     header {
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.98);
       backdrop-filter: blur(8px);
       position: sticky;
       top: 0;
@@ -57,6 +57,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
     }
 
     .brand-logo {
@@ -67,9 +69,95 @@
     }
 
     .brand-logo img {
-      height: 55px;
+      height: 50px;
       width: auto;
       object-fit: contain;
+    }
+
+    /* Links de Navegación */
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--text-dark);
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: color 0.3s ease;
+      cursor: pointer;
+    }
+
+    .nav-link:hover {
+      color: var(--soft-rose);
+    }
+
+    /* Dropdown Categorías */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #ffffff;
+      min-width: 180px;
+      box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      z-index: 150;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    .dropdown-content a {
+      color: var(--text-dark);
+      padding: 10px 16px;
+      text-decoration: none;
+      display: block;
+      font-size: 0.85rem;
+      transition: background 0.2s;
+    }
+
+    .dropdown-content a:hover {
+      background-color: var(--primary-pink);
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    /* Barra de Búsqueda */
+    .search-box {
+      position: relative;
+      flex-grow: 1;
+      max-width: 320px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 0.5rem 1rem 0.5rem 2.2rem;
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .search-box input:focus {
+      border-color: var(--soft-rose);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.85rem;
+      color: var(--text-muted);
     }
 
     .nav-actions {
@@ -127,25 +215,112 @@
       font-weight: bold;
     }
 
-    /* Hero Banner */
-    .hero {
-      background: linear-gradient(135deg, #f7e6e5 0%, #ecd8df 100%);
+    /* Carrusel Banner */
+    .hero-carousel {
+      position: relative;
+      width: 100%;
+      height: 380px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .carousel-slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 0.8s ease-in-out;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       text-align: center;
-      padding: 3.5rem 1.5rem;
-      border-bottom: 1px solid var(--border-color);
     }
 
-    .hero h1 {
+    .carousel-slide.active {
+      opacity: 1;
+    }
+
+    .carousel-slide img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.65);
+    }
+
+    .carousel-caption {
+      position: relative;
+      z-index: 2;
+      color: #ffffff;
+      padding: 0 1.5rem;
+      max-width: 800px;
+    }
+
+    .carousel-caption h1 {
       font-family: var(--font-title);
-      font-size: 2.5rem;
+      font-size: 2.8rem;
       font-weight: 500;
-      color: #4a3b40;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.8rem;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
     }
 
-    .hero p {
-      color: var(--text-muted);
-      font-size: 1rem;
+    .carousel-caption p {
+      font-size: 1.1rem;
+      letter-spacing: 0.5px;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.3);
+      color: white;
+      border: none;
+      font-size: 1.5rem;
+      padding: 0.8rem 1rem;
+      cursor: pointer;
+      z-index: 10;
+      border-radius: 50%;
+      transition: background 0.3s;
+      margin: 0 10px;
+    }
+
+    .carousel-btn:hover {
+      background: rgba(255, 255, 255, 0.7);
+      color: var(--text-dark);
+    }
+
+    .carousel-btn.prev { left: 10px; }
+    .carousel-btn.next { right: 10px; }
+
+    .carousel-dots {
+      position: absolute;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      z-index: 10;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .dot.active {
+      background: var(--accent-gold);
+      width: 25px;
+      border-radius: 10px;
     }
 
     /* Main Container */
@@ -552,12 +727,34 @@
 </head>
 <body>
 
-  <!-- Header -->
+  <!-- Header Completo -->
   <header>
     <div class="nav-container">
-      <a href="#" class="brand-logo">
+      <a href="#" class="brand-logo" id="home-logo">
         <img id="main-logo" alt="Valmont LASH Logo">
       </a>
+
+      <!-- Menú de Navegación -->
+      <nav class="nav-links">
+        <a class="nav-link" id="nav-home">Inicio</a>
+        <div class="dropdown">
+          <span class="nav-link">Categorías ▾</span>
+          <div class="dropdown-content">
+            <a onclick="filterCategory('todos')">Todos los productos</a>
+            <a onclick="filterCategory('Cuidado Facial')">Cuidado Facial</a>
+            <a onclick="filterCategory('Maquillaje')">Maquillaje</a>
+            <a onclick="filterCategory('Pestañas y Cejas')">Pestañas y Cejas</a>
+            <a onclick="filterCategory('Fragancias')">Fragancias</a>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Barra de Búsqueda -->
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="search-input" placeholder="Buscar productos...">
+      </div>
+
       <div class="nav-actions">
         <button class="btn-admin" id="open-admin-btn">+ Agregar Producto</button>
         <button class="cart-icon-btn" id="open-cart-btn" aria-label="Ver Carrito">
@@ -568,10 +765,40 @@
     </div>
   </header>
 
-  <!-- Banner -->
-  <section class="hero">
-    <h1>Elegancia y Resplandor</h1>
-    <p>Descubre nuestra colección exclusiva de cosméticos y realza tu belleza natural.</p>
+  <!-- Carrusel Banner Interactivo -->
+  <section class="hero-carousel">
+    <div class="carousel-slide active">
+      <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1600&q=80" alt="Elegancia y Resplandor">
+      <div class="carousel-caption">
+        <h1>Elegancia y Resplandor</h1>
+        <p>Descubre nuestra colección exclusiva de cosméticos y realza tu belleza natural.</p>
+      </div>
+    </div>
+
+    <div class="carousel-slide">
+      <img src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=1600&q=80" alt="Mirada Impactante">
+      <div class="carousel-caption">
+        <h1>Mirada Impactante</h1>
+        <p>Pestañas y sérums diseñados para destacar en cada momento.</p>
+      </div>
+    </div>
+
+    <div class="carousel-slide">
+      <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=1600&q=80" alt="Cuida tu Piel">
+      <div class="carousel-caption">
+        <h1>Cuidado Facial Premium</h1>
+        <p>Fórmulas de alta calidad para mantener tu rostro radiante e hidratado.</p>
+      </div>
+    </div>
+
+    <button class="carousel-btn prev" id="prev-slide">&#10094;</button>
+    <button class="carousel-btn next" id="next-slide">&#10095;</button>
+
+    <div class="carousel-dots" id="carousel-dots">
+      <span class="dot active" data-slide="0"></span>
+      <span class="dot" data-slide="1"></span>
+      <span class="dot" data-slide="2"></span>
+    </div>
   </section>
 
   <!-- Main -->
@@ -658,12 +885,12 @@
   </footer>
 
   <script>
-    const PHONE_NUMBER = "573000000000"; // Tu número de WhatsApp con código de país 57
+    const PHONE_NUMBER = "573000000000"; // Tu número de WhatsApp
     const ENCODED_KEY = "VmFsbW9udDIwMjYq"; // Contraseña: Valmont2026*
     
     let isAdminAuthenticated = false;
+    let searchQuery = "";
     
-    // Función para formatear a Pesos Colombianos
     function formatCOP(amount) {
       return new Intl.NumberFormat('es-CO', {
         style: 'currency',
@@ -674,7 +901,6 @@
 
     const LOGO_DATA_URI = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 200"><defs><radialGradient id="bg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="%23edd2e0"/><stop offset="100%" stop-color="%23c2a3be"/></radialGradient><linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="%23ffffff"/><stop offset="50%" stop-color="%23f7e3af"/><stop offset="100%" stop-color="%23d4af37"/></linearGradient></defs><circle cx="250" cy="100" r="90" fill="url(%23bg)" stroke="%23ffffff" stroke-width="3"/><ellipse cx="250" cy="100" rx="120" ry="35" fill="none" stroke="url(%23gold)" stroke-width="5" transform="rotate(-15 250 100)"/><text x="250" y="115" font-family="Playfair Display, serif" font-size="42" font-weight="bold" fill="%234a3b40" text-anchor="middle">Valmont</text><text x="250" y="145" font-family="Montserrat, sans-serif" font-size="16" letter-spacing="6" fill="%23ffffff" text-anchor="middle">LASH</text></svg>`;
 
-    // Productos con Precios de Referencia en Pesos Colombianos
     const defaultProductos = [
       {
         id: 1,
@@ -724,12 +950,69 @@
     const addProductForm = document.getElementById('add-product-form');
     const checkoutForm = document.getElementById('checkout-form');
     const mainLogo = document.getElementById('main-logo');
+    const searchInput = document.getElementById('search-input');
 
     document.addEventListener('DOMContentLoaded', () => {
       mainLogo.src = LOGO_DATA_URI;
       renderProducts();
       updateCartUI();
+      initCarousel();
     });
+
+    // Lógica del Carrusel
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.carousel-slide');
+    const dots = document.querySelectorAll('.dot');
+
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === index);
+      });
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === index);
+      });
+      currentSlide = index;
+    }
+
+    function initCarousel() {
+      document.getElementById('next-slide').addEventListener('click', () => {
+        let next = (currentSlide + 1) % slides.length;
+        showSlide(next);
+      });
+
+      document.getElementById('prev-slide').addEventListener('click', () => {
+        let prev = (currentSlide - 1 + slides.length) % slides.length;
+        showSlide(prev);
+      });
+
+      dots.forEach(dot => {
+        dot.addEventListener('click', (e) => {
+          showSlide(parseInt(e.target.dataset.slide));
+        });
+      });
+
+      setInterval(() => {
+        let next = (currentSlide + 1) % slides.length;
+        showSlide(next);
+      }, 5000);
+    }
+
+    // Búsqueda en Vivo
+    searchInput.addEventListener('input', (e) => {
+      searchQuery = e.target.value.toLowerCase().trim();
+      renderProducts();
+    });
+
+    function filterCategory(category) {
+      currentCategory = category;
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.category === category);
+      });
+      renderProducts();
+    }
+
+    document.getElementById('home-logo').addEventListener('click', () => filterCategory('todos'));
+    document.getElementById('nav-home').addEventListener('click', () => filterCategory('todos'));
 
     function checkKey(inputPassword) {
       if (!inputPassword) return false;
@@ -768,12 +1051,16 @@
     function renderProducts() {
       productGrid.innerHTML = '';
       
-      const filtered = currentCategory === 'todos' 
+      let filtered = currentCategory === 'todos' 
         ? productos 
         : productos.filter(p => p.categoria === currentCategory);
 
+      if (searchQuery !== "") {
+        filtered = filtered.filter(p => p.nombre.toLowerCase().includes(searchQuery));
+      }
+
       if (filtered.length === 0) {
-        productGrid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted);">No hay productos en esta categoría.</p>`;
+        productGrid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); margin: 2rem 0;">No se encontraron productos.</p>`;
         return;
       }
 
@@ -798,10 +1085,7 @@
 
     categoriesContainer.addEventListener('click', (e) => {
       if (e.target.classList.contains('filter-btn')) {
-        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-        e.target.classList.add('active');
-        currentCategory = e.target.dataset.category;
-        renderProducts();
+        filterCategory(e.target.dataset.category);
       }
     });
 
